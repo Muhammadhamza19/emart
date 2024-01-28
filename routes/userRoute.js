@@ -139,9 +139,10 @@
 
 // module.exports = router;
 const express = require('express');
-const { signup, login } = require('../Users/controller');
-const { addProduct , getProduct } = require('../product/productController');
+const { signup, login  , getUserByID} = require('../Users/controller');
+const { addProduct , getProduct , getProductByCategory , getProductBySubCategory } = require('../product/productController');
 const {addOrders ,getOrdersByID , getOrders} = require('../order/orderController')
+
 const router = express.Router();
 
 /**
@@ -177,6 +178,12 @@ const router = express.Router();
  *                 type: string
  *               password:
  *                 type: string
+ *               UserType : 
+ *                 type : number 
+ *               imageURL : 
+ *                 type : string
+ * 
+ * 
  *     responses:
  *       200:
  *         description: Successfully registered user
@@ -393,5 +400,93 @@ router.get('/orders' , getOrders)
  */
 router.get('/orders/:id' , getOrdersByID)
 
+
+
+/**
+ * @swagger
+ * /getUserByID/{id}:
+ *   get:
+ *     summary: Get user details by ID
+ *     tags: [User]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: User ID
+ *         required: true
+ *         type: integer
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *         content:
+ *           application/json:
+ *             example:
+ *               response: 200
+ *               message: User Details
+ *               status: true
+ *               data:
+ *                 _id: 1
+ *                 username: john_doe
+ *                 email: john@example.com
+ *                 imageURL: http://example.com/image.jpg
+ *                 UserType: 2
+ *                 Role: user
+ *       400:
+ *         description: Error response
+ *         content:
+ *           application/json:
+ *             example:
+ *               response: 400
+ *               message: something went wrong
+ *               status: false
+ *               error: Error message details
+ */
+router.get('/getUserByID/:id', getUserByID);
+
+/**
+ * @swagger
+ * /getProductBySubCategory/{subcategory}:
+ *   get:
+ *     summary: Get product details 
+ *     tags: [Product]
+ *     parameters:
+ *       - name: subcategory
+ *         in: path
+ *         description: category name
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *         
+ *       400:
+ *         description: Error response
+ *      
+ */
+router.get('/getProductBySubCategory/:subcategory', getProductBySubCategory);
+
+
+
+
+/**
+ * @swagger
+ * /getProductByCategory/{category}:
+ *   get:
+ *     summary: Get product details 
+ *     tags: [Product]
+ *     parameters:
+ *       - name: category
+ *         in: path
+ *         description: category name
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *         
+ *       400:
+ *         description: Error response
+ *      
+ */
+router.get('/getProductByCategory/:category', getProductByCategory);
 
 module.exports = router;

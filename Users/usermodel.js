@@ -17,6 +17,18 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  imageURL :{
+    type : DataTypes.STRING,
+    allowNull : true
+  },
+  UserType :{
+    type : DataTypes.INTEGER,
+    allowNull : true
+  },
+  Role :{
+    type : DataTypes.STRING,
+    allowNull : true
+  }
 });
 
 module.exports = User;

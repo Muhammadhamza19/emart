@@ -23,7 +23,7 @@ const sub_category = sequelize.define('sub_category', {
       key: 'id', 
     },
 
-    
+    // hamza
   },
   createdAt: {
     type: DataTypes.DATE,
