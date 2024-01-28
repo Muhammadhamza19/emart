@@ -7,13 +7,14 @@ const sequelize = require('./config/connectionDB');
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-const PORT = 7007;
+const PORT = 8080;
 const userRoutes = require('./routes/userRoute.js')
 const product = require('./product/productModel.js')
 const category = require('./category/categoryModel.js')
 const sub_category  = require('./sub_category/subCategoryModel.js')
 const order = require('./order/orderModel.js')
-
+const cart = require('./cart/cartModels.js')
+const wishlist = require('./wishlist/wishlistModel.js')
 // Initialize database connection
 async function initializeDatabase() {
   try {
@@ -26,6 +27,8 @@ async function initializeDatabase() {
 await sub_category.sync();
 await product.sync();
 await order.sync();
+await cart.sync()
+await wishlist.sync()
 
 
 

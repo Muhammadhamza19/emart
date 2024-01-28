@@ -142,7 +142,8 @@ const express = require('express');
 const { signup, login  , getUserByID} = require('../Users/controller');
 const { addProduct , getProduct , getProductByCategory , getProductBySubCategory } = require('../product/productController');
 const {addOrders ,getOrdersByID , getOrders} = require('../order/orderController')
-
+const { addcart , getSpecificCart , getUserCart }= require('../cart/cartController')
+const  { addtowishlist , listWishList , getSpecificWishList } = require('../wishlist/wishController')
 const router = express.Router();
 
 /**
@@ -207,7 +208,7 @@ router.post('/api/signup', signup);
  *           schema:
  *             type: object
  *             properties:
- *               username:
+ *               email:
  *                 type: string
  *               password:
  *                 type: string
@@ -250,10 +251,10 @@ router.post('/api/login', login);
  *                 type: string
  *               product_quantity:
  *                 type: number
- *               category_id:
- *                 type: number
- *               sub_category_id:
- *                 type: number
+ *               category_name:
+ *                 type: string
+ *               sub_category_name:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Successfully created product
@@ -487,6 +488,195 @@ router.get('/getProductBySubCategory/:subcategory', getProductBySubCategory);
  *         description: Error response
  *      
  */
+
 router.get('/getProductByCategory/:category', getProductByCategory);
+
+
+
+/**
+ * @swagger
+ * /addcart:
+ *   post:
+ *     summary: Add an item to the shopping cart
+ *     tags: [Shopping Cart]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               user_id:
+ *                 type: number
+ *               vendor_id:
+ *                 type: number
+ *               color:
+ *                 type: string
+ *               quality:
+ *                 type: integer
+ *               seller_name:
+ *                 type: string
+ *               title:
+ *                 type: string
+ *               tprice:
+ *                 type: number
+ *               product_id :
+ *                 type : number
+ *     responses:
+ *       201:
+ *         description: Item added successfully
+ *           
+ *       400:
+ *         description: Bad request - Invalid input data
+ *       500:
+ *         description: Internal Server Error - Something went wrong
+ */
+router.post('/addcart', addcart);
+
+
+/**
+ * @swagger
+ * /getcartByUserID/{user_id}:
+ *   get:
+ *     summary: Get car details 
+ *     tags: [Shopping Cart]
+ *     parameters:
+ *       - name: user_id
+ *         in: path
+ *         description:  get by userid
+ *         required: true
+ *         type: number
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *         
+ *       400:
+ *         description: Error response
+ *      
+ */
+router.get('/getcartByUserID/:user_id', getUserCart );
+
+
+
+
+
+
+/**
+ * @swagger
+ * /getcartByID/{cartId}:
+ *   get:
+ *     summary: Get car details 
+ *     tags: [Shopping Cart]
+ *     parameters:
+ *       - name: cartId
+ *         in: path
+ *         description:  get by id
+ *         required: true
+ *         type: number
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *         
+ *       400:
+ *         description: Error response
+ *      
+ */
+router.get('/getcartByID/:cartId', getSpecificCart );
+
+
+
+
+
+
+
+
+/**
+ * @swagger
+ * /add/wishlist:
+ *   post:
+ *     summary: Add an item to the shopping wishlist
+ *     tags: [Wish List]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               user_id:
+ *                 type: number
+ *               product_id:
+ *                 type: number
+ *               is_active:
+ *                 type: number
+ *     responses:
+ *       201:
+ *         description: Item added successfully
+ *           
+ *       400:
+ *         description: Bad request - Invalid input data
+ *       500:
+ *         description: Internal Server Error - Something went wrong
+ */
+router.post('/add/wishlist', addtowishlist);
+
+
+/**
+ * @swagger
+ * /getWishListByUserID/{user_id}:
+ *   get:
+ *     summary: Get car details 
+ *     tags: [Wish List]
+ *     parameters:
+ *       - name: user_id
+ *         in: path
+ *         description:  get by userid
+ *         required: true
+ *         type: number
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *         
+ *       400:
+ *         description: Error response
+ *      
+ */
+router.get('/getWishListByUserID/:user_id', listWishList );
+
+
+
+
+
+
+/**
+ * @swagger
+ * /getWishListByID/{WishList_id}:
+ *   get:
+ *     summary: Get car details 
+ *     tags: [Wish List]
+ *     parameters:
+ *       - name: WishList_id
+ *         in: path
+ *         description:  get by id
+ *         required: true
+ *         type: number
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *         
+ *       400:
+ *         description: Error response
+ *      
+ */
+router.get('/getWishListByID/:WishList_id', getSpecificWishList );
+
+
+
+
+
+
+
+
+
 
 module.exports = router;

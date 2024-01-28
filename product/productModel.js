@@ -1,8 +1,7 @@
 // models/user.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/connectionDB');
-const categories = require('../category/categoryModel');
-const sub_category = require('../sub_category/subCategoryModel')
+
 
 const product = sequelize.define('product', {
   product_name: {
@@ -30,13 +29,13 @@ const product = sequelize.define('product', {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  category_id: {
-    type: DataTypes.INTEGER,
+  category_name: {
+    type: DataTypes.STRING,
     allowNull: false,
    
   },
-  sub_category_id: {
-    type: DataTypes.INTEGER,
+  sub_category_name: {
+    type: DataTypes.STRING,
     allowNull: false,
     
   },
@@ -50,7 +49,6 @@ const product = sequelize.define('product', {
   },
 });
 
-product.belongsTo(categories, { foreignKey: 'category_id' });
-product.belongsTo(sub_category, { foreignKey: 'sub_category_id' });
+
 
 module.exports = product;

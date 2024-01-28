@@ -46,28 +46,17 @@ const getProduct = async (req, res) => {
 const getProductByCategory = async (req, res) => {
    try {
       const cat_name = req.params.category
-      console.log(cat_name, "cat");
-      const getCat = await categories.findOne({
-         where: {
-            Category_name: cat_name
-         }
-      })
-      let getProductbyCat;
-      if (getCat) {
-         getProductbyCat = await product.findAll({
+      
+      const   getProductbyCat = await product.findAll({
             where: {
-               category_id: getCat.dataValues.id
+               category_name: cat_name
             }
          })
          console.log(getProductbyCat, "getProductbyCat");
          return res.send(getProductbyCat)
-      }
-      else {
-         getProductbyCat = []
-      }
+      
 
-      // console.log("getcat" , getCat);
-      return res.send(getProductbyCat)
+   
    } catch (error) {
       return res.send(error)
    }
@@ -77,28 +66,15 @@ const getProductByCategory = async (req, res) => {
 const getProductBySubCategory = async (req, res) => {
    try {
       const cat_name = req.params.subcategory
-      console.log(cat_name, "cat" , "hvhvh");
-      const getCat = await sub_category.findOne({
-         where: {
-            sub_Category_name: cat_name
-         }
-      })
-      let getProductbyCat;
-      if (getCat) {
-         getProductbyCat = await product.findAll({
+      
+        const getProductbyCat = await product.findAll({
             where: {
-               sub_category_id: getCat.dataValues.id
+               sub_category_name: cat_name
             }
          })
          console.log(getProductbyCat, "getProductbyCat");
          return res.send(getProductbyCat)
-      }
-      else {
-         getProductbyCat = []
-      }
-
-      // console.log("getcat" , getCat);
-      return res.send(getProductbyCat)
+      
    } catch (error) {
       console.log(error);
       return res.send(error)

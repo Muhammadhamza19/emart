@@ -2,8 +2,18 @@ const User = require('./usermodel')
 const express = require('express')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken'); // Import the jsonwebtoken library
-const { Error } = require('sequelize');
+// const { Error } = require('sequelize');
 
+
+
+
+
+class HttpError extends Error {
+  constructor(message, statusCode) {
+    super(message);
+    this.statusCode = statusCode;
+  }
+}
 
 const signup = async (req, res) => {
   try {
@@ -72,13 +82,15 @@ const login = async (req, res) => {
       }
     })
     if (!userdetail) {
-      throw new Error("user not found")
+      throw new HttpError("user not found", 401);
+
+      // throw new HttpError("user not found")
     }
 
     const passwordmatch = await bcrypt.compare(password, userdetail.password)
 
-    if (!password) {
-      throw new Error("incorrect password , please enter correct password")
+    if (!passwordmatch) {
+      throw new HttpError("Invalid password", 401);
     }
 
 
@@ -95,12 +107,39 @@ const login = async (req, res) => {
       data: { userdetail, token },
     });
   } catch (error) {
-    return res.status(400).json({
-      response: 400,
-      message: "Sign-in Failed",
-      status: false,
-      error: error.message,
-    });  }
+
+
+    if (error instanceof HttpError) {
+      return res.status(error.statusCode).json({
+        response: error.statusCode,
+        message: error.message,
+        status: false,
+        data :{
+          userdetail: {
+            id: null,
+            username: "",
+            email: "",
+            password: "",
+            imageURL: null,
+            UserType: null,
+            Role: null,
+            createdAt: null,
+            updatedAt: null,
+          },
+          token: null,
+        }
+      });
+    }
+    
+    
+    else {
+      return res.status(400).json({
+        response: 400,
+        message: "Sign-in Failed",
+        status: false,
+        error: error.message,
+      });
+    }  }
 
 }
 
