@@ -76,18 +76,18 @@ const login = async (req, res) => {
 
     const { email, password } = req.body
 
-    const userdetail = await User.findOne({
+    const user = await User.findOne({
       where: {
         email: email
       }
     })
-    if (!userdetail) {
+    if (!user) {
       throw new HttpError("user not found", 401);
 
       // throw new HttpError("user not found")
     }
 
-    const passwordmatch = await bcrypt.compare(password, userdetail.password)
+    const passwordmatch = await bcrypt.compare(password, user.password)
 
     if (!passwordmatch) {
       throw new HttpError("Invalid password", 401);
@@ -96,7 +96,7 @@ const login = async (req, res) => {
 
 
     const token = await jwt.sign({
-      email: userdetail.email, _id: userdetail._id
+      email: user.email, _id: user._id
     }, "123456", {
       expiresIn: '24h'
     })
@@ -104,7 +104,7 @@ const login = async (req, res) => {
       response: 200,
       message: "Login Successful",
       status: true,
-      data: { userdetail, token },
+      data: { user, token },
     });
   } catch (error) {
 
@@ -115,7 +115,7 @@ const login = async (req, res) => {
         message: error.message,
         status: false,
         data :{
-          userdetail: {
+          user: {
             id: null,
             username: "",
             email: "",
@@ -151,12 +151,12 @@ const getUserByID = async(req,res)=>{
     console.log("heppu");
     const id = req.params.id
 
-    const UserDetails = await User.findByPk(id)
+    const users = await User.findByPk(id)
     return res.status(200).json({
       response: 200,
       message: "User Details",
       status: true,
-      data: UserDetails,
+      data: users,
     });  } catch (error) {
       return res.status(400).json({
         response: 400,

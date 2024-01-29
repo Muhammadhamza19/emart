@@ -1,11 +1,13 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./config/swagger.js');
 const User = require('./Users/usermodel');
 const sequelize = require('./config/connectionDB');
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 const PORT = 8080;
 const userRoutes = require('./routes/userRoute.js')
