@@ -82,6 +82,31 @@ const getProductBySubCategory = async (req, res) => {
 }
 
 
+const getProductByFeature = async (req, res) => {
+   try {
+      const feature = req.params.isFeature === 'true'; // Convert string to boolean
+
+      // const feature = req.params.isFeature
+      console.log(Boolean(feature) , "feature");
+        const getAllProductByFeature = await product.findAll({
+            where: {
+               isFeature: Boolean(feature)
+            }
+         })
+         console.log(getAllProductByFeature.dataValues, "getAllProductByFeature");
+         return res.send(getAllProductByFeature)
+      
+   } catch (error) {
+      console.log(error);
+      return res.send(error)
+   }
+}
 
 
-module.exports = { addProduct, getProduct, getProductByCategory , getProductBySubCategory }
+
+//ALTER TABLE products
+// ADD COLUMN vendor_id Int default null;
+// ALTER TABLE products
+// ADD COLUMN seller_name varchar(255) default null;
+
+module.exports = { addProduct, getProduct, getProductByCategory , getProductBySubCategory , getProductByFeature }

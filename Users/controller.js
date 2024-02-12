@@ -168,4 +168,49 @@ const getUserByID = async(req,res)=>{
   }
 }
 
-module.exports = { signup, login  , getUserByID}
+
+const updatePassword = async(req,res)=>{
+  try {
+    console.log("heppu");
+    const user_id = req.body.user_id;
+const password = req.body.password;
+const confirmPassword = req.body.confirmPassword
+    const users = await User.findByPk(user_id)
+
+    if(users){
+if(password===confirmPassword){
+  console.log("hello" , password , confirmPassword);
+  const hashedPassword = await bcrypt.hash(password, 10);
+    console.log(hashedPassword, "hashedPassword");
+  const updateUserPassword = await User.update({password : hashedPassword}, {where :{id : user_id}})
+  return res.status(400).json({message : "password updated"})
+
+}
+else{
+  return res.status(400).json({message : "password and confirmed password not matched"})
+}
+    }
+
+
+    // return res.status(200).json({
+    //   response: 200,
+    //   message: "User Details",
+    //   status: true,
+    //   data: users,
+    // });
+    } catch (error) {
+      console.log(error);
+      return res.status(400).json({
+        response: 400,
+        message: "something went wrong",
+        status: false,
+        error: error.message,
+      });
+    
+  }
+}
+
+
+
+
+module.exports = { signup, login  , getUserByID , updatePassword}

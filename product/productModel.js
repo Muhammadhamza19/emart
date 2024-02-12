@@ -47,6 +47,17 @@ const product = sequelize.define('product', {
     type: DataTypes.DATE,
     allowNull: false,
   },
+   vendor_id :{
+    type: DataTypes.INTEGER,
+    allowNull: true,
+   },
+
+   seller_name :{
+    type: DataTypes.STRING,
+    allowNull: true,
+   }
+
+
 });
 
 

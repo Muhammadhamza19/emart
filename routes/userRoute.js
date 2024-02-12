@@ -139,11 +139,11 @@
 
 // module.exports = router;
 const express = require('express');
-const { signup, login  , getUserByID} = require('../Users/controller');
-const { addProduct , getProduct , getProductByCategory , getProductBySubCategory } = require('../product/productController');
-const {addOrders ,getOrdersByID , getOrders} = require('../order/orderController')
-const { addcart , getSpecificCart , getUserCart }= require('../cart/cartController')
-const  { addtowishlist , listWishList , getSpecificWishList } = require('../wishlist/wishController')
+const { signup, login, getUserByID, updatePassword } = require('../Users/controller');
+const { addProduct, getProduct, getProductByCategory, getProductBySubCategory, getProductByFeature } = require('../product/productController');
+const { addOrders, getOrdersByID, getOrders } = require('../order/orderController')
+const { addcart, getSpecificCart, getUserCart } = require('../cart/cartController')
+const { addtowishlist, listWishList, getSpecificWishList, removeWishListItem, getWishListByProductIDAndUserId, countItemByUser_id } = require('../wishlist/wishController')
 const router = express.Router();
 
 /**
@@ -255,6 +255,10 @@ router.post('/api/login', login);
  *                 type: string
  *               sub_category_name:
  *                 type: string
+ *               seller_name : 
+ *                 type : string
+ *               vendor_id : 
+ *                 type : number
  *     responses:
  *       200:
  *         description: Successfully created product
@@ -372,7 +376,7 @@ router.post('/orders', addOrders);
  *             example:
  *               - order_by: John Doe
  */
-router.get('/orders' , getOrders)
+router.get('/orders', getOrders)
 
 
 /**
@@ -399,7 +403,7 @@ router.get('/orders' , getOrders)
  *       404:
  *         description: Order not found
  */
-router.get('/orders/:id' , getOrdersByID)
+router.get('/orders/:id', getOrdersByID)
 
 
 
@@ -554,7 +558,7 @@ router.post('/addcart', addcart);
  *         description: Error response
  *      
  */
-router.get('/getcartByUserID/:user_id', getUserCart );
+router.get('/getcartByUserID/:user_id', getUserCart);
 
 
 
@@ -581,7 +585,7 @@ router.get('/getcartByUserID/:user_id', getUserCart );
  *         description: Error response
  *      
  */
-router.get('/getcartByID/:cartId', getSpecificCart );
+router.get('/getcartByID/:cartId', getSpecificCart);
 
 
 
@@ -641,7 +645,7 @@ router.post('/add/wishlist', addtowishlist);
  *         description: Error response
  *      
  */
-router.get('/getWishListByUserID/:user_id', listWishList );
+router.get('/getWishListByUserID/:user_id', listWishList);
 
 
 
@@ -668,15 +672,151 @@ router.get('/getWishListByUserID/:user_id', listWishList );
  *         description: Error response
  *      
  */
-router.get('/getWishListByID/:WishList_id', getSpecificWishList );
+router.get('/getWishListByID/:WishList_id', getSpecificWishList);
 
 
+/**
+ * @swagger
+ * /getProductByFeature/{isFeature}:
+ *   get:
+ *     summary: Get products by feature
+ *     tags: [Product]
+ *     parameters:
+ *       - in: path
+ *         name: isFeature
+ *         required: true
+ *         schema:
+ *           type: boolean
+ *         description: Boolean parameter to indicate whether to include products with the specified feature
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved products
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                   product_name:
+ *                     type: string
+ *                   createdAt:
+ *                     type: string
+ *                     format: date-time
+ *                   updatedAt:
+ *                     type: string
+ *                     format: date-time
+ *       404:
+ *         description: No products found with the specified feature
+ */
+
+router.get('/getProductByFeature/:isFeature', getProductByFeature);
 
 
+/**
+ * @swagger
+ * /removeWishList/{WishList_id}:
+ *   put:
+ *     summary: remove wishlist item
+ *     tags: [Wish List]
+ *     parameters:
+ *       - name: WishList_id
+ *         in: path
+ *         description:  update by id
+ *         required: true
+ *         type: number
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *         
+ *       400:
+ *         description: Error response
+ *      
+ */
+router.put('/removeWishList/:WishList_id', removeWishListItem);
 
 
+/**
+ * @swagger
+ * /ByProductIDAndUserId/{user_id}/{product_id}:
+ *   get:
+ *     summary: get wishlist item
+ *     tags: [Wish List]
+ *     parameters:
+ *       - in: path
+ *         name: user_id
+ *         description: User ID
+ *         required: true
+ *         schema:
+ *           type: integer
+ *       - in: path
+ *         name: product_id
+ *         description: Product ID
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *       400:
+ *         description: Error response
+ */
+router.get('/ByProductIDAndUserId/:user_id/:product_id', getWishListByProductIDAndUserId);
 
 
+/**
+ * @swagger
+ * /countItemByUser_id/{user_id}:
+ *   get:
+ *     summary: get wishlist item count
+ *     tags: [Wish List]
+ *     parameters:
+ *       - in: path
+ *         name: user_id
+ *         description: User ID
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *       400:
+ *         description: Error response
+ */
+router.get('/countItemByUser_id/:user_id', countItemByUser_id);
+
+
+/**
+ * @swagger
+ * /update/password:
+ *   post:
+ *     summary: Add an item to the shopping wishlist
+ *     tags: [Authentication]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               user_id:
+ *                 type: number
+ *               password:
+ *                 type: string
+ *               confirmPassword:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: password updated successfully
+ *           
+ *       400:
+ *         description: Bad request - Invalid input data
+ *       500:
+ *         description: Internal Server Error - Something went wrong
+ */
+router.post('/update/password', updatePassword);
 
 
 module.exports = router;
