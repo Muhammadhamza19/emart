@@ -142,8 +142,8 @@ const express = require('express');
 const { signup, login, getUserByID, updatePassword } = require('../Users/controller');
 const { addProduct, getProduct, getProductByCategory, getProductBySubCategory, getProductByFeature } = require('../product/productController');
 const { addOrders, getOrdersByID, getOrders } = require('../order/orderController')
-const { addcart, getSpecificCart, getUserCart } = require('../cart/cartController')
-const { addtowishlist, listWishList, getSpecificWishList, removeWishListItem, getWishListByProductIDAndUserId, countItemByUser_id } = require('../wishlist/wishController')
+const { addcart,removeCart, getSpecificCart, getUserCart } = require('../cart/cartController')
+const {removeWishlistByUserAndProductID, addtowishlist, listWishList, getSpecificWishList, removeWishListItem, getWishListByProductIDAndUserId, countItemByUser_id } = require('../wishlist/wishController')
 const router = express.Router();
 
 /**
@@ -817,6 +817,58 @@ router.get('/countItemByUser_id/:user_id', countItemByUser_id);
  *         description: Internal Server Error - Something went wrong
  */
 router.post('/update/password', updatePassword);
+
+
+/**
+ * @swagger
+ * /remove/{user_id}/{product_id}:
+ *   put:
+ *     summary: Remove wishlist item
+ *     tags: [Wish List]
+ *     parameters:
+ *       - name: user_id
+ *         in: path
+ *         description: User ID
+ *         required: true
+ *         schema:
+ *           type: integer
+ *       - name: product_id
+ *         in: path
+ *         description: Product ID
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *       400:
+ *         description: Error response
+ */
+router.put('/remove/:user_id/:product_id', removeWishlistByUserAndProductID);
+
+
+
+/**
+ * @swagger
+ * /removeCart/{id}:
+ *   delete:
+ *     summary: Remove wishlist item
+ *     tags: [Wish List]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: User ID
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *       400:
+ *         description: Error response
+ */
+router.delete('/removeCart/:id', removeCart);
+
 
 
 module.exports = router;

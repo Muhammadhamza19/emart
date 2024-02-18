@@ -177,8 +177,30 @@ const countItemByUser_id = async (req, res) => {
 }
 
 
+const removeWishlistByUserAndProductID = async (req, res) => {
+   try {
+      const user_id = Number(req.params.user_id);
+      const product_id = Number(req.params.product_id)
+      console.log(user_id , "user");
+      const removeWishList = await wishlist.update({ is_active: 0 },
+         {
+            where: {
+               user_id: user_id,
+               product_id : product_id
+            },
+         }
+
+      )
+    console.log(removeWishList);
+      return res.send({ message : "updated"})
+   } catch (error) {
+      console.log(error);
+      return res.send(error)
+   }
+}
 
 
 
 
-module.exports = { addtowishlist, listWishList, getSpecificWishList, removeWishListItem , getWishListByProductIDAndUserId , countItemByUser_id}
+
+module.exports = { removeWishlistByUserAndProductID,addtowishlist, listWishList, getSpecificWishList, removeWishListItem , getWishListByProductIDAndUserId , countItemByUser_id}

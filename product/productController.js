@@ -84,7 +84,7 @@ const getProductBySubCategory = async (req, res) => {
 
 const getProductByFeature = async (req, res) => {
    try {
-      const feature = req.params.isFeature === 'true'; // Convert string to boolean
+      const feature = req.params.isFeature === 'true';
 
       // const feature = req.params.isFeature
       console.log(Boolean(feature) , "feature");

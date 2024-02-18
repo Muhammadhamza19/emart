@@ -82,8 +82,24 @@ const getSpecificCart = async (req, res) => {
 }
 
 
+const removeCart = async (req, res) => {
+   try {
+    const id = req.params.id
+    const removeebyId = await cart.destroy({
+        where: {
+          id: id,
+        },
+        
+      });
+    
+    
+      return res.send({removeebyId , message : "successfully updated"});
+   } catch (error) {
+      console.log(error);
+      return res.send(error)
+   }
+}
 
 
 
-
-module.exports = { addcart , getSpecificCart , getUserCart }
+module.exports = { addcart , getSpecificCart , getUserCart ,removeCart }
