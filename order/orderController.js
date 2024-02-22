@@ -45,4 +45,32 @@ const getOrdersByID = async(req,res)=>{
     }
 }
 
-module.exports = {addOrders ,getOrdersByID , getOrders}
+
+const getOrdersByuserID = async(req,res)=>{
+    try {
+        const user_id = req.params.user_id
+        console.log(user_id);
+        const orders = await order.findAll({where :{user_id : user_id}})
+        let data
+        console.log("hfjdnfuifjnu");
+        if(orders.length >0){   
+                 data = {
+                    message : "result",
+                    orders : orders
+                 }
+        }else {
+
+            data = {
+                message : "result",
+                orders : []
+            }
+             } 
+             
+             
+             console.log("uefuhwefhwef");
+            return res.send(data)
+            } catch (error) {
+        return error
+    }
+}
+module.exports = {addOrders ,getOrdersByID , getOrders ,getOrdersByuserID}

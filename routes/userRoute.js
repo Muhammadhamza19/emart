@@ -140,8 +140,8 @@
 // module.exports = router;
 const express = require('express');
 const { signup, login, getUserByID, updatePassword } = require('../Users/controller');
-const { addProduct, getProduct, getProductByCategory, getProductBySubCategory, getProductByFeature } = require('../product/productController');
-const { addOrders, getOrdersByID, getOrders } = require('../order/orderController')
+const { addProduct, getProduct, getProductByCategory, getProductBySubCategory, getProductByFeature , searchProduct } = require('../product/productController');
+const { addOrders, getOrdersByID, getOrders , getOrdersByuserID } = require('../order/orderController')
 const { addcart,removeCart, getSpecificCart, getUserCart } = require('../cart/cartController')
 const {removeWishlistByUserAndProductID, addtowishlist, listWishList, getSpecificWishList, removeWishListItem, getWishListByProductIDAndUserId, countItemByUser_id } = require('../wishlist/wishController')
 const router = express.Router();
@@ -850,14 +850,20 @@ router.put('/remove/:user_id/:product_id', removeWishlistByUserAndProductID);
 
 /**
  * @swagger
- * /removeCart/{id}:
+ * /removeCart/{id}/{product_id}:
  *   delete:
  *     summary: Remove wishlist item
  *     tags: [Wish List]
  *     parameters:
  *       - name: id
  *         in: path
- *         description: User ID
+ *         description: cart ID
+ *         required: true
+ *         schema:
+ *           type: integer
+ *       - name: product_id
+ *         in: path
+ *         description: product ID
  *         required: true
  *         schema:
  *           type: integer
@@ -867,7 +873,77 @@ router.put('/remove/:user_id/:product_id', removeWishlistByUserAndProductID);
  *       400:
  *         description: Error response
  */
-router.delete('/removeCart/:id', removeCart);
+router.delete('/removeCart/:id/:product_id', removeCart);
+
+
+/**
+ * @swagger
+ * /searchProduct/{product_name}:
+ *   get:
+ *     summary: Get products by feature
+ *     tags: [Product]
+ *     parameters:
+ *       - in: path
+ *         name: product_name
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: string parameter to indicate whether to include products with the specified feature
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved products
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                   product_name:
+ *                     type: string
+ *                   createdAt:
+ *                     type: string
+ *                     format: date-time
+ *                   updatedAt:
+ *                     type: string
+ *                     format: date-time
+ *       404:
+ *         description: No products found with the specified feature
+ */
+
+router.get('/searchProduct/:product_name', searchProduct);
+
+
+
+
+/**
+ * @swagger
+ * /ordersbyuser/{user_id}:
+ *   get:
+ *     summary: Get order by ID
+ *     tags:
+ *       - Orders
+ *     parameters:
+ *       - in: path
+ *         name: user_id
+ *         required: true
+ *         description: ID of the order to get
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *         content:
+ *           application/json:
+ *             example:
+ *               order_by: John Doe
+ *       404:
+ *         description: Order not found
+ */
+router.get('/ordersbyuser/:user_id', getOrdersByuserID)
+
 
 
 

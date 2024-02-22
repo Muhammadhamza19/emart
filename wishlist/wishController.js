@@ -152,6 +152,7 @@ const countItemByUser_id = async (req, res) => {
       const wishlistCount = await wishlist.count({
          where: {
             user_id: user_id,
+            is_active : 1
          },
       })
       const orderCount = await order.count({

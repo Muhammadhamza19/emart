@@ -85,9 +85,11 @@ const getSpecificCart = async (req, res) => {
 const removeCart = async (req, res) => {
    try {
     const id = req.params.id
+    const product_id = req.params.product_id
     const removeebyId = await cart.destroy({
         where: {
           id: id,
+          product_id : product_id
         },
         
       });

@@ -102,6 +102,24 @@ const getProductByFeature = async (req, res) => {
    }
 }
 
+const searchProduct = async(req,res)=>{
+   try {
+      const searchTerm= req.params.product_name  
+     const prod_search = await product.findAll({
+      where :{
+      product_name: {
+         [Op.like]: `%${searchTerm}%` 
+      }
+   }
+     }) 
+     console.log(prod_search , "hello");
+     return res.send(prod_search)
+   } catch (error) {
+      console.log(error)
+      return error
+   }
+}
+
 
 
 //ALTER TABLE products
@@ -109,4 +127,4 @@ const getProductByFeature = async (req, res) => {
 // ALTER TABLE products
 // ADD COLUMN seller_name varchar(255) default null;
 
-module.exports = { addProduct, getProduct, getProductByCategory , getProductBySubCategory , getProductByFeature }
+module.exports = { addProduct, getProduct, getProductByCategory , getProductBySubCategory , getProductByFeature , searchProduct }
