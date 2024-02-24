@@ -17,6 +17,7 @@ const sub_category  = require('./sub_category/subCategoryModel.js')
 const order = require('./order/orderModel.js')
 const cart = require('./cart/cartModels.js')
 const wishlist = require('./wishlist/wishlistModel.js')
+const imageProduct = require('./images/imageModels.js')
 // Initialize database connection
 async function initializeDatabase() {
   try {
@@ -31,6 +32,7 @@ await product.sync();
 await order.sync();
 await cart.sync()
 await wishlist.sync()
+await imageProduct.sync()
 
 
 

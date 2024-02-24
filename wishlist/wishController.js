@@ -12,8 +12,9 @@ const addtowishlist = async (req, res) => {
 
       const wishlistexited = await wishlist.findOne({
          where: {
+            is_active : 0,
             user_id: req.body.user_id,
-            product_id: req.body.product_id
+            product_id: req.body.product_id 
          }
       })
       if (wishlistexited) {

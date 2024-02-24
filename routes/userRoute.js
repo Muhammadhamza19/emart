@@ -140,7 +140,7 @@
 // module.exports = router;
 const express = require('express');
 const { signup, login, getUserByID, updatePassword } = require('../Users/controller');
-const { addProduct, getProduct, getProductByCategory, getProductBySubCategory, getProductByFeature , searchProduct } = require('../product/productController');
+const { addProduct, getProduct, getProductByCategory, getProductBySubCategory, getProductByFeature , searchProduct , updateFeatureOfProduct } = require('../product/productController');
 const { addOrders, getOrdersByID, getOrders , getOrdersByuserID } = require('../order/orderController')
 const { addcart,removeCart, getSpecificCart, getUserCart } = require('../cart/cartController')
 const {removeWishlistByUserAndProductID, addtowishlist, listWishList, getSpecificWishList, removeWishListItem, getWishListByProductIDAndUserId, countItemByUser_id } = require('../wishlist/wishController')
@@ -259,6 +259,10 @@ router.post('/api/login', login);
  *                 type : string
  *               vendor_id : 
  *                 type : number
+ *               images : 
+ *                 type : array
+ *                 items :
+ *                   type : string
  *     responses:
  *       200:
  *         description: Successfully created product
@@ -945,6 +949,34 @@ router.get('/searchProduct/:product_name', searchProduct);
 router.get('/ordersbyuser/:user_id', getOrdersByuserID)
 
 
+/**
+ * @swagger
+ * /updateFeature:
+ *   post:
+ *     summary: Create a new product
+ *     tags: [Product]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               isFeature:
+ *                 type: boolean
+ *               vendor_id : 
+ *                 type : number
+ *               product_id : 
+ *                 type : number
+ *     responses:
+ *       200:
+ *         description: Successfully created product
+ *       400:
+ *         description: Bad request
+ *       500:
+ *         description: Internal server error
+ */
+router.post('/updateFeature', updateFeatureOfProduct);
 
 
 module.exports = router;

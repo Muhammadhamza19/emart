@@ -2,31 +2,57 @@ const express = require('express')
 const product = require('./productModel')
 const categories = require('../category/categoryModel')
 const sub_category = require('../sub_category/subCategoryModel')
-const { Op } = require('sequelize');
+const imageProduct = require('../images/imageModels')
+const { Op, where } = require('sequelize');
 const { sequelize } = require('sequelize');
 
 //create product 
 const addProduct = async (req, res) => {
    try {
-      //    const data = {
-      //     product_name : req.body,
-      //     product_color : req.body,
-      //     product_price : req.body,
-      //     isFeature : req.body,
-      //     product_desc : req.body,
-      //     product_image: req.body,
-      //     product_quantity : req.body,
-      //     category_id : req.body,
-      //     sub_category_id : req.body
-      //    }
-      const data = req.body
+         const data = {
+          product_name : req.body.product_name,
+          product_color : req.body.product_color,
+          product_price : req.body.product_price,
+          isFeature : req.body.isFeature,
+          product_desc : req.body.product_desc,
+          product_image: req.body.product_image,
+          product_quantity : req.body.product_quantity,
+          category_name : req.body.category_name,
+          sub_category_name : req.body.sub_category_name,
+          seller_name :req.body.seller_name,
+          vendor_id : req.body.vendor_id
+         }
+      // const data = req.body
       console.log(data, "daya");
       const createProduct = await product.create(data)
-      console.log(createProduct);
+      console.log(createProduct , "crerefded" , req.body.images);
+let addimage;
+let dataArray =[]
+if(createProduct){
+   for(let i =0 ; i<= req.body.images.length -1 ; i++){
+      let datassss ={
+         image_link : req.body.images[i],
+         product_id : createProduct.id
+      }
+      addimage = await imageProduct.create(datassss)
+      dataArray.push(req.body.images[i])
+console.log(addimage , "addimage");
+   }
+}
+
+
+const response = {
+   product : createProduct , 
+   image :dataArray
+}
+
+
+
       //    return createProduct.product.dataValues
-      return res.status(201).json(createProduct); // Return the created data
+      return res.status(201).json(response); // Return the created data
 
    } catch (error) {
+      console.log(error , "err");
       res.send(error)
    }
 }
@@ -35,6 +61,7 @@ const addProduct = async (req, res) => {
 const getProduct = async (req, res) => {
    try {
       const allProduct = await product.findAll()
+      const allImages = await imageProduct.findAll( )
       return res.send(allProduct)
    } catch (error) {
       return res.send(error)
@@ -121,10 +148,24 @@ const searchProduct = async(req,res)=>{
 }
 
 
+const updateFeatureOfProduct = async(req,res)=>{
+   try {
+
+      const updatefeature = await product.update({isFeature : req.body.isFeature} , {where :{id : req.body.product_id , vendor_id : req.body.vendor_id}})
+      console.log(updatefeature , "feature");
+      return res.send({message : "updated successfully"})
+
+   } catch (error) {
+      console.log(error , "error");
+      return res.send(error)
+   }
+}
+
+
 
 //ALTER TABLE products
 // ADD COLUMN vendor_id Int default null;
 // ALTER TABLE products
 // ADD COLUMN seller_name varchar(255) default null;
 
-module.exports = { addProduct, getProduct, getProductByCategory , getProductBySubCategory , getProductByFeature , searchProduct }
+module.exports = { addProduct, getProduct, getProductByCategory , getProductBySubCategory , getProductByFeature , searchProduct  , updateFeatureOfProduct}
