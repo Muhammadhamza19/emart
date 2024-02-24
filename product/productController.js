@@ -60,10 +60,41 @@ const response = {
 
 const getProduct = async (req, res) => {
    try {
-      const allProduct = await product.findAll()
-      const allImages = await imageProduct.findAll( )
-      return res.send(allProduct)
+      const allProducts = await product.findAll(
+         {
+         include: [{
+           model: imageProduct,
+           required: false, 
+           attributes: ['image_link'] 
+         }]
+       }
+       );
+       console.log(allProducts , "allProducts");
+       
+       const formattedProducts = allProducts.map(product => {
+         return {
+           id: product.id,
+           product_name: product.product_name,
+           product_color: product.product_color,
+           product_price: product.product_price,
+           isFeature: product.isFeature,
+           product_desc: product.product_desc,
+           product_image: product.product_image,
+           product_quantity: product.product_quantity,
+           category_name: product.category_name,
+           sub_category_name: product.sub_category_name,
+           createdAt: product.createdAt,
+           updatedAt: product.updatedAt,
+           vendor_id: product.vendor_id,
+           seller_name: product.seller_name,
+           imageProducts: product.imageProducts.map(img => img.image_link)
+
+         }
+      })
+      // // const allImages = await imageProduct.findAll( )
+      return res.send(formattedProducts)
    } catch (error) {
+      console.log(error , "errr");
       return res.send(error)
    }
 }
@@ -74,17 +105,43 @@ const getProductByCategory = async (req, res) => {
    try {
       const cat_name = req.params.category
       
-      const   getProductbyCat = await product.findAll({
+      const  getProductbyCat = await product.findAll({
             where: {
-               category_name: cat_name
+               category_name: cat_name},
+               include: [{
+                  model: imageProduct,
+                  required: false, 
+                  attributes: ['image_link'] 
+                }]
+            
+         })
+         const formattedProducts = getProductbyCat.map(product => {
+            return {
+              id: product.id,
+              product_name: product.product_name,
+              product_color: product.product_color,
+              product_price: product.product_price,
+              isFeature: product.isFeature,
+              product_desc: product.product_desc,
+              product_image: product.product_image,
+              product_quantity: product.product_quantity,
+              category_name: product.category_name,
+              sub_category_name: product.sub_category_name,
+              createdAt: product.createdAt,
+              updatedAt: product.updatedAt,
+              vendor_id: product.vendor_id,
+              seller_name: product.seller_name,
+              imageProducts: product.imageProducts.map(img => img.image_link)
+   
             }
          })
          console.log(getProductbyCat, "getProductbyCat");
-         return res.send(getProductbyCat)
+         return res.send(formattedProducts)
       
 
    
    } catch (error) {
+      console.log(error , "erro");
       return res.send(error)
    }
 }
@@ -97,10 +154,36 @@ const getProductBySubCategory = async (req, res) => {
         const getProductbyCat = await product.findAll({
             where: {
                sub_category_name: cat_name
+            },
+               include: [{
+                  model: imageProduct,
+                  required: false, 
+                  attributes: ['image_link'] 
+                }]
+            
+         })
+         const formattedProducts = getProductbyCat.map(product => {
+            return {
+              id: product.id,
+              product_name: product.product_name,
+              product_color: product.product_color,
+              product_price: product.product_price,
+              isFeature: product.isFeature,
+              product_desc: product.product_desc,
+              product_image: product.product_image,
+              product_quantity: product.product_quantity,
+              category_name: product.category_name,
+              sub_category_name: product.sub_category_name,
+              createdAt: product.createdAt,
+              updatedAt: product.updatedAt,
+              vendor_id: product.vendor_id,
+              seller_name: product.seller_name,
+              imageProducts: product.imageProducts.map(img => img.image_link)
+   
             }
          })
          console.log(getProductbyCat, "getProductbyCat");
-         return res.send(getProductbyCat)
+         return res.send(formattedProducts)
       
    } catch (error) {
       console.log(error);
@@ -117,11 +200,36 @@ const getProductByFeature = async (req, res) => {
       console.log(Boolean(feature) , "feature");
         const getAllProductByFeature = await product.findAll({
             where: {
-               isFeature: Boolean(feature)
+               isFeature: Boolean(feature)},
+               include: [{
+                  model: imageProduct,
+                  required: false, 
+                  attributes: ['image_link'] 
+                }]
+            
+         })
+         const formattedProducts = getAllProductByFeature.map(product => {
+            return {
+              id: product.id,
+              product_name: product.product_name,
+              product_color: product.product_color,
+              product_price: product.product_price,
+              isFeature: product.isFeature,
+              product_desc: product.product_desc,
+              product_image: product.product_image,
+              product_quantity: product.product_quantity,
+              category_name: product.category_name,
+              sub_category_name: product.sub_category_name,
+              createdAt: product.createdAt,
+              updatedAt: product.updatedAt,
+              vendor_id: product.vendor_id,
+              seller_name: product.seller_name,
+              imageProducts: product.imageProducts.map(img => img.image_link)
+   
             }
          })
          console.log(getAllProductByFeature.dataValues, "getAllProductByFeature");
-         return res.send(getAllProductByFeature)
+         return res.send(formattedProducts)
       
    } catch (error) {
       console.log(error);
@@ -136,11 +244,41 @@ const searchProduct = async(req,res)=>{
       where :{
       product_name: {
          [Op.like]: `%${searchTerm}%` 
-      }
-   }
+      },
+   },
+      include: [{
+         model: imageProduct,
+         required: false, 
+         attributes: ['image_link'] 
+       }]
+   
      }) 
+
+
+     const formattedProducts = prod_search.map(product => {
+      return {
+        id: product.id,
+        product_name: product.product_name,
+        product_color: product.product_color,
+        product_price: product.product_price,
+        isFeature: product.isFeature,
+        product_desc: product.product_desc,
+        product_image: product.product_image,
+        product_quantity: product.product_quantity,
+        category_name: product.category_name,
+        sub_category_name: product.sub_category_name,
+        createdAt: product.createdAt,
+        updatedAt: product.updatedAt,
+        vendor_id: product.vendor_id,
+        seller_name: product.seller_name,
+        imageProducts: product.imageProducts.map(img => img.image_link)
+
+      }
+   })
+
+
      console.log(prod_search , "hello");
-     return res.send(prod_search)
+     return res.send(formattedProducts)
    } catch (error) {
       console.log(error)
       return error

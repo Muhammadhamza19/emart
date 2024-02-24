@@ -12,13 +12,19 @@ const addtowishlist = async (req, res) => {
 
       const wishlistexited = await wishlist.findOne({
          where: {
-            is_active : 0,
             user_id: req.body.user_id,
-            product_id: req.body.product_id 
+            product_id: req.body.product_id
          }
       })
       if (wishlistexited) {
-         return res.status(400).json({ error: "Product already exists in the wishlist" });
+         const updatewishklist = await wishlist.update({ is_active: 1 }, {
+            where:
+            {
+               user_id: req.body.user_id,
+               product_id: req.body.product_id
+            }
+         })
+         return res.status(201).json(updatewishklist)
 
       } else {
          const createWishList = await wishlist.create(data)
@@ -129,17 +135,17 @@ const removeWishListItem = async (req, res) => {
 const getWishListByProductIDAndUserId = async (req, res) => {
    try {
       const user_id = Number(req.params.user_id);
-      console.log(user_id , "user");
+      console.log(user_id, "user");
       const product_id = Number(req.params.product_id);
-      console.log(product_id , "product_id");
+      console.log(product_id, "product_id");
       const getwishList_byid = await wishlist.findOne({
          where: {
             user_id: user_id,
             product_id: product_id
          },
-         
+
       })
-      console.log(getwishList_byid , "getwishList_byid");
+      console.log(getwishList_byid, "getwishList_byid");
       return res.send(getwishList_byid)
    } catch (error) {
       return res.send(error)
@@ -149,11 +155,11 @@ const getWishListByProductIDAndUserId = async (req, res) => {
 const countItemByUser_id = async (req, res) => {
    try {
       const user_id = Number(req.params.user_id);
-      console.log(user_id , "user");
+      console.log(user_id, "user");
       const wishlistCount = await wishlist.count({
          where: {
             user_id: user_id,
-            is_active : 1
+            is_active: 1
          },
       })
       const orderCount = await order.count({
@@ -166,10 +172,10 @@ const countItemByUser_id = async (req, res) => {
             user_id: user_id,
          },
       })
-      const response ={
-         wishlistCount : wishlistCount,
-         orderCount : orderCount,
-         cartCount : cartCount
+      const response = {
+         wishlistCount: wishlistCount,
+         orderCount: orderCount,
+         cartCount: cartCount
 
       }
       return res.send(response)
@@ -183,18 +189,18 @@ const removeWishlistByUserAndProductID = async (req, res) => {
    try {
       const user_id = Number(req.params.user_id);
       const product_id = Number(req.params.product_id)
-      console.log(user_id , "user");
+      console.log(user_id, "user");
       const removeWishList = await wishlist.update({ is_active: 0 },
          {
             where: {
                user_id: user_id,
-               product_id : product_id
+               product_id: product_id
             },
          }
 
       )
-    console.log(removeWishList);
-      return res.send({ message : "updated"})
+      console.log(removeWishList);
+      return res.send({ message: "updated" })
    } catch (error) {
       console.log(error);
       return res.send(error)
@@ -205,4 +211,4 @@ const removeWishlistByUserAndProductID = async (req, res) => {
 
 
 
-module.exports = { removeWishlistByUserAndProductID,addtowishlist, listWishList, getSpecificWishList, removeWishListItem , getWishListByProductIDAndUserId , countItemByUser_id}
+module.exports = { removeWishlistByUserAndProductID, addtowishlist, listWishList, getSpecificWishList, removeWishListItem, getWishListByProductIDAndUserId, countItemByUser_id }
