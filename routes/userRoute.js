@@ -331,7 +331,7 @@ router.get('/getProduct', getProduct);
  *               order_by_state:
  *                 type: string
  *               order_code:
- *                 type: string
+ *                 type: number
  *               order_confirmed:
  *                 type: string
  *               order_date:
@@ -352,6 +352,10 @@ router.get('/getProduct', getProduct);
  *                 type: integer
  *               product_id:
  *                 type: integer
+ *               order_details : 
+ *                 type : array
+ *                 items :
+ *                   type : object
  *     responses:
  *       201:
  *         description: Successfully created

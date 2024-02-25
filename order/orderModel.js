@@ -35,7 +35,7 @@ const order = sequelize.define('order', {
     allowNull : true
   },
   order_code: {
-    type: DataTypes.STRING,
+    type: DataTypes.INTEGER,
     allowNull : true
   },
   order_confirmed: {
@@ -77,7 +77,8 @@ user_id :{
 product_id :{
   type : DataTypes.INTEGER,
   allowNull : true
-}
+},
+
 
 
 });
