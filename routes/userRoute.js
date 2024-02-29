@@ -142,7 +142,7 @@ const express = require('express');
 const { signup, login, getUserByID, updatePassword } = require('../Users/controller');
 const { addProduct, getProduct, getProductByCategory, getProductBySubCategory, getProductByFeature , searchProduct , updateFeatureOfProduct } = require('../product/productController');
 const { addOrders, getOrdersByID, getOrders , getOrdersByuserID } = require('../order/orderController')
-const { addcart,removeCart, getSpecificCart, getUserCart } = require('../cart/cartController')
+const { addcart,removeCart, getSpecificCart, getUserCart , removeallCartbyuserId} = require('../cart/cartController')
 const {removeWishlistByUserAndProductID, addtowishlist, listWishList, getSpecificWishList, removeWishListItem, getWishListByProductIDAndUserId, countItemByUser_id } = require('../wishlist/wishController')
 const router = express.Router();
 
@@ -981,6 +981,30 @@ router.get('/ordersbyuser/:user_id', getOrdersByuserID)
  *         description: Internal server error
  */
 router.post('/updateFeature', updateFeatureOfProduct);
+
+
+
+/**
+ * @swagger
+ * /removeCartByUserID/{user_id}:
+ *   delete:
+ *     summary: Remove wishlist item
+ *     tags: [Wish List]
+ *     parameters:
+ *       - name: user_id
+ *         in: path
+ *         description: cart user_id ID
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *       400:
+ *         description: Error response
+ */
+router.delete('/removeCartByUserID/:user_id', removeallCartbyuserId);
+
 
 
 module.exports = router;

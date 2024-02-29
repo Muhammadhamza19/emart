@@ -72,12 +72,19 @@ const getProduct = async (req, res) => {
        console.log(allProducts , "allProducts");
        
        const formattedProducts = allProducts.map(product => {
+         let is_feature ;
+         if(product.isFeature == 0){
+            is_feature = false
+         } else if(product.isFeature == 1){
+            is_feature = false
+         }
+
          return {
            id: product.id,
            product_name: product.product_name,
            product_color: product.product_color,
            product_price: product.product_price,
-           isFeature: product.isFeature,
+           isFeature: is_feature,
            product_desc: product.product_desc,
            product_image: product.product_image,
            product_quantity: product.product_quantity,
@@ -163,12 +170,18 @@ const getProductBySubCategory = async (req, res) => {
             
          })
          const formattedProducts = getProductbyCat.map(product => {
+            let is_feature ;
+            if(product.isFeature == 0){
+               is_feature = false
+            } else if(product.isFeature == 1){
+               is_feature = false
+            }
             return {
               id: product.id,
               product_name: product.product_name,
               product_color: product.product_color,
               product_price: product.product_price,
-              isFeature: product.isFeature,
+              isFeature: is_feature,
               product_desc: product.product_desc,
               product_image: product.product_image,
               product_quantity: product.product_quantity,
@@ -209,12 +222,18 @@ const getProductByFeature = async (req, res) => {
             
          })
          const formattedProducts = getAllProductByFeature.map(product => {
+            let is_feature ;
+            if(product.isFeature == 0){
+               is_feature = false
+            } else if(product.isFeature == 1){
+               is_feature = false
+            }
             return {
               id: product.id,
               product_name: product.product_name,
               product_color: product.product_color,
               product_price: product.product_price,
-              isFeature: product.isFeature,
+              isFeature: is_feature,
               product_desc: product.product_desc,
               product_image: product.product_image,
               product_quantity: product.product_quantity,
@@ -256,12 +275,18 @@ const searchProduct = async(req,res)=>{
 
 
      const formattedProducts = prod_search.map(product => {
+      let is_feature ;
+      if(product.isFeature == 0){
+         is_feature = false
+      } else if(product.isFeature == 1){
+         is_feature = false
+      }
       return {
         id: product.id,
         product_name: product.product_name,
         product_color: product.product_color,
         product_price: product.product_price,
-        isFeature: product.isFeature,
+        isFeature: is_feature,
         product_desc: product.product_desc,
         product_image: product.product_image,
         product_quantity: product.product_quantity,

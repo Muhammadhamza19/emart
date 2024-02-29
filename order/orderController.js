@@ -74,6 +74,11 @@ try {
             }]
           }
     )
+//     let data =[]
+//     addOrders.map(item =>{
+//         if(item.)
+// data.push({...AllOrders , })
+//     })
     console.log(AllOrders);
     return res.send(AllOrders)
 } catch (error) {

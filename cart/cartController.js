@@ -103,5 +103,24 @@ const removeCart = async (req, res) => {
 }
 
 
+const removeallCartbyuserId = async (req, res) => {
+   try {
+    const user_id = req.params.user_id
+    console.log(user_id , "uer");
+    const removeebyId = await cart.destroy({
+        where: {
+         user_id: user_id,
+        },
+        
+      });
+    
+    
+      return res.send({removeebyId , message : "successfully updated"});
+   } catch (error) {
+      console.log(error);
+      return res.send(error)
+   }
+}
 
-module.exports = { addcart , getSpecificCart , getUserCart ,removeCart }
+
+module.exports = { addcart , getSpecificCart , getUserCart ,removeCart  , removeallCartbyuserId}
