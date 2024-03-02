@@ -74,13 +74,25 @@ try {
             }]
           }
     )
-//     let data =[]
-//     addOrders.map(item =>{
-//         if(item.)
-// data.push({...AllOrders , })
-//     })
-    console.log(AllOrders);
-    return res.send(AllOrders)
+
+    let dataArray = AllOrders.map((item) => {
+        let orderConfirmed ;
+        if(item.order_confirmed == '1'){
+            orderConfirmed = true
+            item.order_confirmed = orderConfirmed
+        }
+        else if(item.order_confirmed == '0'){
+            orderConfirmed = false
+            item.order_confirmed = orderConfirmed
+        }
+
+        return {
+            // order_confirmed: orderConfirmed,
+            ...item.toJSON() // Convert Sequelize model instance to plain object
+        };
+    });
+
+    res.status(200).json(dataArray);
 } catch (error) {
     console.log(error, "err");
     return error
@@ -104,7 +116,25 @@ const getOrdersByID = async(req,res)=>{
               }]
         },
             )
-        return res.send(orders)
+
+
+            let dataArray = orders.map((item) => {
+                let orderConfirmed ;
+                if(item.order_confirmed == '1'){
+                    orderConfirmed = true
+                    item.order_confirmed = orderConfirmed
+                }
+                else if(item.order_confirmed == '0'){
+                    orderConfirmed = false
+                    item.order_confirmed = orderConfirmed
+                }
+        
+                return {
+                    // order_confirmed: orderConfirmed,
+                    ...item.toJSON() // Convert Sequelize model instance to plain object
+                };
+            });
+        return res.send(dataArray)
     } catch (error) {
         console.log(error , "ii");
         return error
@@ -125,10 +155,26 @@ const getOrdersByuserID = async(req,res)=>{
         },)
         let data
         console.log("hfjdnfuifjnu");
-        if(orders.length >0){   
+        if(orders.length >0){ 
+            let dataArray = AllOrders.map((item) => {
+                let orderConfirmed ;
+                if(item.order_confirmed == '1'){
+                    orderConfirmed = true
+                    item.order_confirmed = orderConfirmed
+                }
+                else if(item.order_confirmed == '0'){
+                    orderConfirmed = false
+                    item.order_confirmed = orderConfirmed
+                }
+        
+                return {
+                    // order_confirmed: orderConfirmed,
+                    ...item.toJSON() // Convert Sequelize model instance to plain object
+                };
+            });  
                  data = {
                     message : "result",
-                    orders : orders
+                    orders : dataArray
                  }
         }else {
 

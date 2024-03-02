@@ -76,7 +76,7 @@ const getProduct = async (req, res) => {
          if(product.isFeature == 0){
             is_feature = false
          } else if(product.isFeature == 1){
-            is_feature = false
+            is_feature = true
          }
 
          return {
@@ -123,12 +123,18 @@ const getProductByCategory = async (req, res) => {
             
          })
          const formattedProducts = getProductbyCat.map(product => {
+            let is_feature ;
+            if(product.isFeature == 0){
+               is_feature = false
+            } else if(product.isFeature == 1){
+               is_feature = true
+            }
             return {
               id: product.id,
               product_name: product.product_name,
               product_color: product.product_color,
               product_price: product.product_price,
-              isFeature: product.isFeature,
+              isFeature: is_feature,
               product_desc: product.product_desc,
               product_image: product.product_image,
               product_quantity: product.product_quantity,
@@ -174,7 +180,7 @@ const getProductBySubCategory = async (req, res) => {
             if(product.isFeature == 0){
                is_feature = false
             } else if(product.isFeature == 1){
-               is_feature = false
+               is_feature = true
             }
             return {
               id: product.id,
@@ -226,7 +232,7 @@ const getProductByFeature = async (req, res) => {
             if(product.isFeature == 0){
                is_feature = false
             } else if(product.isFeature == 1){
-               is_feature = false
+               is_feature = true
             }
             return {
               id: product.id,
@@ -279,7 +285,7 @@ const searchProduct = async(req,res)=>{
       if(product.isFeature == 0){
          is_feature = false
       } else if(product.isFeature == 1){
-         is_feature = false
+         is_feature = true
       }
       return {
         id: product.id,
