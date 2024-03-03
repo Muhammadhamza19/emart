@@ -41,7 +41,9 @@ const addOrders = async (req, res) => {
                     Color: orderDetailData.Color,
                     img: orderDetailData.img,
                     title: orderDetailData.title,
-                    vendor_id: orderDetailData.vendor_id
+                    vendor_id: orderDetailData.vendor_id,
+                    qty : orderDetailData.qty,
+                    tprice : orderDetailData.tprice
                 };
                 console.log(detailData, "detailData");
                 createDetails = await orderDetails.create(detailData);
@@ -281,3 +283,11 @@ const getOrdersByuserID = async (req, res) => {
     }
 }
 module.exports = { addOrders, getOrdersByID, getOrders, getOrdersByuserID }
+
+
+
+
+//alter table orderDetails
+// add column tprice INT default null
+// alter table orderDetails
+// add column qty INT default null

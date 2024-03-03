@@ -23,6 +23,15 @@ const orderDetails = sequelize.define('orderDetails', {
   vendor_id: {
     type: DataTypes.INTEGER,
   },
+  tprice :{
+    type : DataTypes.INTEGER,
+    allowNull : true
+  },
+  qty :{
+    type : DataTypes.INTEGER,
+    allowNull : true
+  }
+  
 });
 order.hasMany(orderDetails, { foreignKey: 'order_id' });
 
