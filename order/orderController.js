@@ -2,6 +2,7 @@ const express = require('express')
 
 const order = require('../order/orderModel');
 const orderDetails = require('../orderDetails/orderDetailsModels');
+const product = require('../product/productModel');
 
 //add orders
 
@@ -282,7 +283,28 @@ const getOrdersByuserID = async (req, res) => {
         return error
     }
 }
-module.exports = { addOrders, getOrdersByID, getOrders, getOrdersByuserID }
+
+const getAllCount = async(req,res)=>{
+    try {
+       const orderCount = await order.count() 
+       console.log(orderCount , "orderCount")
+       const productCount = await product.count()
+      console.log(productCount , "productCount")
+       const response = {
+        orderCount : orderCount,
+        productCount:productCount
+       }
+       return res.send(response)
+    } catch (error) {
+        console.log(error , "error");
+        return error
+    }
+}
+
+
+
+
+module.exports = { addOrders, getOrdersByID, getOrders, getOrdersByuserID , getAllCount }
 
 
 

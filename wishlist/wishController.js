@@ -207,8 +207,29 @@ const removeWishlistByUserAndProductID = async (req, res) => {
    }
 }
 
+const productWishlist = async(req,res)=>{
+   try {
+      const wishlistProduct = await wishlist.findAll(
+         {
+            include: [{
+                model: product,
+                required: false,
+                duplicating: false
+                  // attributes: ['id' , 'product_name' , 'product_color' ] 
+            }],
+            group: ['product.id'] 
+        }
+      )
+      console.log(wishlistProduct, "wishlistProduct")
+      const products = wishlistProduct.map(wishlistProduct => wishlistProduct.product);
+
+      return res.send(products)
+   } catch (error) {
+console.log(error , "error");
+      return error
+   }
+}
 
 
 
-
-module.exports = { removeWishlistByUserAndProductID, addtowishlist, listWishList, getSpecificWishList, removeWishListItem, getWishListByProductIDAndUserId, countItemByUser_id }
+module.exports = { removeWishlistByUserAndProductID, addtowishlist, listWishList, getSpecificWishList, removeWishListItem, getWishListByProductIDAndUserId, countItemByUser_id , productWishlist }

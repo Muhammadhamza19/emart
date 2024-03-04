@@ -141,9 +141,9 @@
 const express = require('express');
 const { signup, login, getUserByID, updatePassword } = require('../Users/controller');
 const { addProduct, getProduct, getProductByCategory, getProductBySubCategory, getProductByFeature , searchProduct , updateFeatureOfProduct } = require('../product/productController');
-const { addOrders, getOrdersByID, getOrders , getOrdersByuserID } = require('../order/orderController')
+const { addOrders, getOrdersByID, getOrders , getOrdersByuserID , getAllCount } = require('../order/orderController')
 const { addcart,removeCart, getSpecificCart, getUserCart , removeallCartbyuserId} = require('../cart/cartController')
-const {removeWishlistByUserAndProductID, addtowishlist, listWishList, getSpecificWishList, removeWishListItem, getWishListByProductIDAndUserId, countItemByUser_id } = require('../wishlist/wishController')
+const {productWishlist ,removeWishlistByUserAndProductID, addtowishlist, listWishList, getSpecificWishList, removeWishListItem, getWishListByProductIDAndUserId, countItemByUser_id } = require('../wishlist/wishController')
 const router = express.Router();
 
 /**
@@ -1004,6 +1004,62 @@ router.post('/updateFeature', updateFeatureOfProduct);
  *         description: Error response
  */
 router.delete('/removeCartByUserID/:user_id', removeallCartbyuserId);
+
+
+
+
+/**
+ * @swagger
+ * /getAllCount:
+ *   get:
+ *     summary: Get all count
+ *     tags: [Product]
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved products
+ *         content:
+ *           application/json:
+ *             example:
+ *               - id: 1
+ *                 product_name: Sample Product 1
+ *                 createdAt: 2024-01-24T12:00:00Z
+ *                 updatedAt: 2024-01-24T12:30:00Z
+ *               - id: 2
+ *                 product_name: Sample Product 2
+ *                 createdAt: 2024-01-25T10:00:00Z
+ *                 updatedAt: 2024-01-25T10:45:00Z
+ *       500:
+ *         description: Internal server error
+ */
+
+router.get('/getAllCount', getAllCount);
+
+/**
+ * @swagger
+ * /productWishlist:
+ *   get:
+ *     summary: Get all productWishlist
+ *     tags: [Product]
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved products
+ *         content:
+ *           application/json:
+ *             example:
+ *               - id: 1
+ *                 product_name: Sample Product 1
+ *                 createdAt: 2024-01-24T12:00:00Z
+ *                 updatedAt: 2024-01-24T12:30:00Z
+ *               - id: 2
+ *                 product_name: Sample Product 2
+ *                 createdAt: 2024-01-25T10:00:00Z
+ *                 updatedAt: 2024-01-25T10:45:00Z
+ *       500:
+ *         description: Internal server error
+ */
+
+router.get('/productWishlist', productWishlist);
+
 
 
 
