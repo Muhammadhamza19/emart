@@ -302,9 +302,26 @@ const getAllCount = async(req,res)=>{
 }
 
 
+const updateOrderById = async(req,res)=>{
+    try {
+       const data = req.body
+        const updatedOrder = await order.update(
+            data,
+            {where :{
+                id : req.params.id
+            }}
+
+    )
+    return res.send(updatedOrder)
+    } catch (error) {
+        console.log(error)
+        return error
+    }
+}
 
 
-module.exports = { addOrders, getOrdersByID, getOrders, getOrdersByuserID , getAllCount }
+
+module.exports = { addOrders, getOrdersByID, getOrders, getOrdersByuserID , getAllCount , updateOrderById }
 
 
 

@@ -209,21 +209,27 @@ const removeWishlistByUserAndProductID = async (req, res) => {
 
 const productWishlist = async(req,res)=>{
    try {
-      const wishlistProduct = await wishlist.findAll(
-         {
-            include: [{
-                model: product,
-                required: false,
-                duplicating: false
-                  // attributes: ['id' , 'product_name' , 'product_color' ] 
-            }],
-            group: ['product.id'] 
-        }
-      )
-      console.log(wishlistProduct, "wishlistProduct")
-      const products = wishlistProduct.map(wishlistProduct => wishlistProduct.product);
-
-      return res.send(products)
+      const wishlistProduct = await wishlist.findAll();
+      let dataArray = [];
+      
+      wishlistProduct.forEach(item => {
+          const productId = item.dataValues.product_id;
+          if (!dataArray.includes(productId)) {
+              dataArray.push(productId);
+          }
+      });
+      
+      if (dataArray.length != 0) {
+          const promises = dataArray.map(async (item) => {
+              const findProduct = await product.findOne({ where: { id: item } });
+              return findProduct;
+          });
+      
+          const finaldata = await Promise.all(promises);
+          return res.send(finaldata);
+      } else {
+          return res.send([]);
+      }
    } catch (error) {
 console.log(error , "error");
       return error

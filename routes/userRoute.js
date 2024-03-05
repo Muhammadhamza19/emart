@@ -141,7 +141,7 @@
 const express = require('express');
 const { signup, login, getUserByID, updatePassword } = require('../Users/controller');
 const { addProduct, getProduct, getProductByCategory, getProductBySubCategory, getProductByFeature , searchProduct , updateFeatureOfProduct } = require('../product/productController');
-const { addOrders, getOrdersByID, getOrders , getOrdersByuserID , getAllCount } = require('../order/orderController')
+const { addOrders, getOrdersByID, getOrders , getOrdersByuserID , getAllCount , updateOrderById } = require('../order/orderController')
 const { addcart,removeCart, getSpecificCart, getUserCart , removeallCartbyuserId} = require('../cart/cartController')
 const {productWishlist ,removeWishlistByUserAndProductID, addtowishlist, listWishList, getSpecificWishList, removeWishListItem, getWishListByProductIDAndUserId, countItemByUser_id } = require('../wishlist/wishController')
 const router = express.Router();
@@ -1061,6 +1061,34 @@ router.get('/getAllCount', getAllCount);
 router.get('/productWishlist', productWishlist);
 
 
+/**
+ * @swagger
+ * /updateOrderById/{id}:
+ *   post:
+ *     summary: Update an order by ID
+ *     tags: [Order]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID of the order to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *     responses:
+ *       200:
+ *         description: Successfully updated the order
+ *       400:
+ *         description: Bad request
+ *       500:
+ *         description: Internal server error
+ */
+router.post('/updateOrderById/:id', updateOrderById);
 
 
 module.exports = router;
