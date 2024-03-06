@@ -4,6 +4,7 @@ const User = require('../Users/usermodel');
 const product = require('../product/productModel');
 const order = require('../order/orderModel');
 const cart = require('../cart/cartModels');
+const imageProduct = require('../images/imageModels');
 //create product 
 const addtowishlist = async (req, res) => {
    try {
@@ -221,7 +222,11 @@ const productWishlist = async(req,res)=>{
       
       if (dataArray.length != 0) {
           const promises = dataArray.map(async (item) => {
-              const findProduct = await product.findOne({ where: { id: item } });
+              const findProduct = await product.findOne({ where: { id: item } ,               include: [{
+               model: imageProduct,
+               required: false, 
+               attributes: ['image_link'] 
+             }]});
               return findProduct;
           });
       
